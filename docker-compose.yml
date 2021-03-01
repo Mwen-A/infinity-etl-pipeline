@@ -1,3 +1,6 @@
+# compose the docker-compose file using the command:
+# docker compose up -d
+
 # if we attach shell, we can use: psql -U postgres
 # to see the databases, type \l
 
