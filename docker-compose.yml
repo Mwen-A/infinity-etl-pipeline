@@ -1,0 +1,28 @@
+# if we attach shell, we can use: psql -U postgres
+# to see the databases, type \l
+
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: postgres_container
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - my_db:/var/lib/postgres
+
+  adminer:
+    image: adminer
+    container_name: adminer_container
+    ports:
+      - 8080:8080
+volumes:
+  my_db:
+
+# GETTING INTO ADMINER
+# system: PostgreSQL
+# server: db
+# username: postgres
+# Password: in your .env file
