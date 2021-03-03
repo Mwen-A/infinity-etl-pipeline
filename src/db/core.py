@@ -14,8 +14,10 @@ PORT = int(os.environ.get("POSTGRES_PORT"))
 DB = os.environ.get("POSTGRES_DB")
 USER = os.environ.get("POSTGRES_USER")
 
-conn = psycopg2.connect(host=HOST, user=USER, password=PASSWORD, dbname=DB, port=PORT)
-cur = conn.cursor()
+def connection():
+    return psycopg2.connect(host=HOST, user=USER, password=PASSWORD, dbname=DB, port=PORT)
+
+conn = connection()
 
 # or as a function??, with conn.cursor() as cur:
 
@@ -31,6 +33,14 @@ def db_query(conn, sql):
     finally:
         pass
     # connection close?, catch exceptions.. 
+
+def db_search(conn, sql, values):
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, values)
+        return cur.fetchall()
+    finally:
+        pass
 
 def db_update(conn, sql, values):
     try:
