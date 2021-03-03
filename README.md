@@ -3,7 +3,7 @@
 
 An ETL pipeline "elevator pitch"
 
-
+For the franchise owners who need to understand their customers and be consistent with their data, the infinity Cafes Dashboard is a data processing platform that connects data from different cafes to understand what users want. Unlike the current decentralised, manual system, our product centralises data, predicts trends, and highlights strengths to help the company grow.
 
 
 ### Table of contents
@@ -56,7 +56,3 @@ For daily sprints and weekly retros, we will be having a daily 5-minute morning 
 The weekly retro will follow the same format in more detail and will be up to an hour in duration. 
 
 [Back up top](#table-of-contents)
-
-
-This is a test! -Aiden
-
