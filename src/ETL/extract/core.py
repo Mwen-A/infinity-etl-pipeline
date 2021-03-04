@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def extract_csv(file_path: str):
     headers = [
         "datetime",
