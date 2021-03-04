@@ -1,4 +1,15 @@
+# importing the relevant packages
 import pandas as pd
+import numpy as np
+
+
+# importing the relevant modulels
+from src.db.core import connection, db_update, db_query, db_search
+
+
+# setting up the connection
+conn = connection()
+
 
 # EXTRACT
 def extract_csv(file_path: str):
@@ -26,19 +37,59 @@ for basket in df["items"]:
                 # if it is a null, replace with NaN
                 basket[position] = "regular"
 
-# create another dataframe for the unique products
+
+# create a dataframe for the unique locations
+location_df = df["location"].unique()
+
+# # load the locations into the database
+for location in location_df:
+    search_location = "SELECT * FROM location WHERE location_name=%(location_name)s"
+    values = {"location_name": location}
+    result = db_search(conn,search_location,values)
+    if result == []:
+        sql = "INSERT INTO location (location_name) VALUES (%(location_name)s)"
+        values = {"location_name": location}
+        db_update(conn, sql, values)
 
 
+# # create another dataframe for the unique products
+products_list = []
+for row in df["items"]:
+    no_of_items = int(len(row)/3)
+    for position in range(0,len(row),3):
+        products_list.append((row[position], row[position+1]))
+products_set = set(products_list)
 
-print(df.head())
+# load the unique products into the database
+for size,name in products_set:
+    search_product = "SELECT * FROM product WHERE product_name=%(product_name)s AND product_size=%(product_size)s"
+    values = {"product_name": name, "product_size": size}
+    result = db_search(conn,search_product,values)
+    if result == []:
+        sql = "INSERT INTO product (product_name, product_size) VALUES (%(product_name)s,%(product_size)s)"
+        values = {"product_name": name, "product_size": size}
+        db_update(conn,sql,values)
 
-# LOAD
-
-# take the unique dataframe and push directly into the database
-
-
-# go through each row
-## it would read each location, check if it is already in the database
-## take the price and payment type, and add them to the puchase table
-## do a loop through items:
-### take the size, name, price check if they already exist in the database
+# populate the purchase table and transaction table
+for idx in range(len(df)- 530):
+    total_price = df["price"][idx]
+    payment_type = df["payment-type"][idx]
+    purchase_time = pd.Timestamp(df["datetime"][idx])
+    location_variable = df["location"][idx]
+    
+    # we need to find the id in the database for the location
+    search_location = "SELECT * FROM location WHERE location_name=%(location_name)s"
+    values = {"location_name": location_variable}
+    result = db_search(conn,search_location,values)
+    location_id = result[0][0]
+    print(location_id)
+    
+    # we can now populate the purchase table
+    # first we need to check if they are unique
+    search_purchase = "SELECT * FROM purchase WHERE total_price=%(total_price)s AND payment_type=%(payment_type)s AND purchase_time=%(purchase_time)s AND location_id=%(location_id)s"
+    values = {"total_price": "%.2f" % total_price, "payment_type": payment_type, "purchase_time": purchase_time, "location_id": location_id}
+    result = db_search(conn,search_purchase,values)
+    if result == []:
+        sql = "INSERT INTO purchase (total_price, payment_type, purchase_time, location_id) VALUES (%(total_price)s,%(payment_type)s,%(purchase_time)s,%(location_id)s)"
+        values = {"total_price": total_price, "payment_type": payment_type, "purchase_time": purchase_time, "location_id": location_id}
+        db_update(conn,sql,values)
