@@ -1,6 +1,6 @@
-import os 
-import psycopg2                # postgreSQL database adapter 
-from dotenv import load_dotenv # for loading env variables from .env file
+import os
+import psycopg2  # postgreSQL database adapter
+from dotenv import load_dotenv  # for loading env variables from .env file
 
 load_dotenv()
 
@@ -14,8 +14,12 @@ PORT = int(os.environ.get("POSTGRES_PORT"))
 DB = os.environ.get("POSTGRES_DB")
 USER = os.environ.get("POSTGRES_USER")
 
+
 def connection():
-    return psycopg2.connect(host=HOST, user=USER, password=PASSWORD, dbname=DB, port=PORT)
+    return psycopg2.connect(
+        host=HOST, user=USER, password=PASSWORD, dbname=DB, port=PORT
+    )
+
 
 conn = connection()
 
@@ -29,10 +33,11 @@ def db_query(conn, sql):
         cur = conn.cursor()
         cur.execute(sql)
         return cur.fetchall()
-        
+
     finally:
         pass
-    # connection close?, catch exceptions.. 
+    # connection close?, catch exceptions..
+
 
 def db_search(conn, sql, values):
     try:
@@ -42,6 +47,7 @@ def db_search(conn, sql, values):
     finally:
         pass
 
+
 def db_update(conn, sql, values):
     try:
         cur = conn.cursor()
@@ -49,6 +55,7 @@ def db_update(conn, sql, values):
         conn.commit()
     finally:
         pass
+
 
 def db_delete(conn, sql, index):
     try:
