@@ -14,6 +14,9 @@ def extract_csv(file_path: str):
     df = pd.read_csv(file_path, names=headers)
     return df
 
+    # try
+    # except IOError:
+    #     print("File path cant be found")
 
 def drop_sensitive_info(df):
     to_drop = ["name", "payment-details"]
