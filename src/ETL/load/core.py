@@ -42,6 +42,7 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
     )
     values = {"location_name": loc}
     loc_result = db_search(conn, search_location, values)
+    loc_result = [list(loc_result[0])]
     for idx in range(len(df)):
         total_price = df["price"][idx]
         payment_type = df["payment-type"][idx]
@@ -57,6 +58,7 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
             result = db_search(conn, search_location, values)
             location_id = result[0][0]
             loc = location_variable
+            loc_result[0][0] = location_id
         else:
             location_id = loc_result[0][0]
 
