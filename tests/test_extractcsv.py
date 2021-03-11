@@ -1,9 +1,9 @@
 import pytest
 import pandas as pd
 from io import StringIO
-from unittest.mock import Mock, MagicMock, patch
-from pandas.testing import assert_frame_equal
 
+from unittest.mock import Mock, MagicMock, patch
+from pandas.testing import assert_frame_equal, assert_series_equal
 
 def extract_csv(file_path: str):
     headers = [
@@ -17,9 +17,6 @@ def extract_csv(file_path: str):
     ]
     df = pd.read_csv(file_path, names=headers)
     return df
-
-
-mock_data = StringIO("""2020-12-20,ldn,Momo,Car,CASH,50,None""")
 
 mock_df_raw = {
     "datetime": ["2020-12-20"],
@@ -44,25 +41,19 @@ mock_headers = pd.DataFrame(
     ],
 )
 
-
 def test_addheaders_ecsv():
+    
+    mock_data = StringIO("""2020-12-20,ldn,Momo,Car,CASH,50,None""")
     actual = extract_csv(mock_data)
     expected = mock_headers
-    print(actual.iloc[0])
-    print(expected.iloc[0])
-    print(actual.shape)
-    print(expected.shape)
 
+    assert_series_equal(actual.iloc[0], expected.iloc[0])
     assert_frame_equal(actual, expected)
-    assert (actual == expected).all()[0]
-
+    assert (actual.shape == expected.shape)
 
 def test_filepatherror_ecsv():
     with pytest.raises(IOError):
         extract_csv("notavalidpath")
 
-
 test_addheaders_ecsv()
 test_filepatherror_ecsv()
-
-test_addheaders_ecsv()
