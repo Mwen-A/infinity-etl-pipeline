@@ -1,6 +1,6 @@
 import pandas as pd
 from src.db.core import connection, db_update, db_search
-
+import uuid
 
 def load_unique_locations(conn, db_update, db_search, df):
     # create a dataframe for the unique locations
@@ -22,17 +22,20 @@ def load_unique_products(conn, db_update, db_search, df):
     products_list = []
     for row in df["items"]:
         for position in range(0, len(row), 3):
-            products_list.append((row[position].title(), row[position + 1].title()))
+            products_list.append((row[position].title(), row[position + 1].title())
     products_set = set(products_list)
-
+    for item in products_set:
+        product_id = uuid.uuid4()
+        products_set = (product_id, ) + item
+        
     # load the unique products into the database
-    for size, name in products_set:
-        search_product = "SELECT * FROM product WHERE product_name=%(product_name)s AND product_size=%(product_size)s"
-        values = {"product_name": name, "product_size": size}
+    for prod_id, size, name in products_set:
+        search_product = "SELECT * FROM product WHERE product_size=%(product_size)s AND product_name=%(product_name)s"
+        values = {"product_id": prod_id, "product_name": name, "product_size": size}
         result = db_search(conn, search_product, values)
         if result == []:
-            sql = "INSERT INTO product (product_name, product_size) VALUES (%(product_name)s,%(product_size)s)"
-            values = {"product_name": name, "product_size": size}
+            sql = "INSERT INTO product (product_id, product_name, product_size) VALUES (%(product_id)s,%(product_name)s,%(product_size)s)"
+            values = {"product_id": prod_id, "product_name": name, "product_size": size}
             db_update(conn, sql, values)
 
 
@@ -105,3 +108,11 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
                 "transaction_price": transaction_price,
             }
             db_update(conn, add_transaction, values)
+            
+def func_test():
+    for row in df["items"]:
+        for position in range(0, len(row), 3):
+            products_list.append((row[position].title(), row[position + 1].title()))
+    products_set = set(products_list)
+    print(products_set)
+    
