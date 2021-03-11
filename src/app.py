@@ -4,7 +4,18 @@ import numpy as np
 import time
 
 # importing the relevant modulels
-from src.db.core import connection, db_update, db_query, db_search
+from src.db.core import (
+    connection,
+    db_update,
+    db_query,
+    db_search,
+    db_create,
+    create_location,
+    create_product,
+    create_purchase,
+    create_transaction,
+)
+
 from src.ETL.extract.core import drop_sensitive_info, extract_csv
 from src.ETL.transform.core import (
     normalise_items,
@@ -20,11 +31,16 @@ from src.ETL.load.core import (
 # setting up the connection
 conn = connection()
 
+# creating the tables
+db_create(conn, create_product)
+db_create(conn, create_location)
+db_create(conn, create_purchase)
+db_create(conn, create_transaction)
 
 # EXTRACT
 # load data into the program
 start = time.time()
-df = extract_csv("data/isle-of-wight.csv")
+df = extract_csv("data/2021-02-23-isle-of-wight.csv")
 
 # TRANSFORM
 # drop personally identifiable information and clean up
