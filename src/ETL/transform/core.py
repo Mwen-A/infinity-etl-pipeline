@@ -1,5 +1,5 @@
 import pandas as pd
-
+import uuid
 
 def normalise_items(df):
     for i in range(len(df["items"])):
@@ -15,6 +15,18 @@ def fill_null_values(df):
                     # if it is a null, replace with NaN
                     basket[position] = "Regular"
     return df
+
+def get_unique_products(df):
+    # create another dataframe for the unique products
+    products_list = []
+    for row in df["items"]:
+        for position in range(0, len(row), 3):
+            products_list.append((row[position].title(), row[position + 1].title()))
+    products_set = set(products_list)
+    for item in products_set:
+        product_id = uuid.uuid4()
+        item = (product_id, ) + item
+    return products_set
 
 
 # this may be used to speed up the loading process
