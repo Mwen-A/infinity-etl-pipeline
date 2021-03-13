@@ -56,8 +56,10 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
             location_id = loc_result[0][0]
 
         # we can now populate the purchase table
-        sql = "INSERT INTO purchase (total_price, payment_type, purchase_time, location_id) VALUES (%(total_price)s,%(payment_type)s,%(purchase_time)s,%(location_id)s)"
+        purchase_id = uuid.uuid4()
+        sql = "INSERT INTO purchase (purchase_id, total_price, payment_type, purchase_time, location_id) VALUES (%(purchase_id)s,%(total_price)s,%(payment_type)s,%(purchase_time)s,%(location_id)s)"
         values = {
+            "purchase_id": purchase_id,
             "total_price": total_price,
             "payment_type": payment_type,
             "purchase_time": purchase_time,
@@ -91,8 +93,10 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
             product_variable = db_search(conn, search_for_product_id, values)
 
             product_id = product_variable[0][0]
-            add_transaction = "INSERT INTO transaction (product_id, purchase_id, transaction_price) VALUES (%(product_id)s,%(purchase_id)s,%(transaction_price)s)"
+            transaction_id = uuid.uuid4()
+            add_transaction = "INSERT INTO transaction (transaction_id, product_id, purchase_id, transaction_price) VALUES (%(transaction_id)s,%(product_id)s,%(purchase_id)s,%(transaction_price)s)"
             values = {
+                "transaction_id": transaction_id,
                 "product_id": product_id,
                 "purchase_id": purchase_id,
                 "transaction_price": transaction_price,
