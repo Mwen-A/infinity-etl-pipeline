@@ -39,6 +39,10 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
     values = {"location_name": loc}
     loc_result = db_search(conn, search_location, values)
     loc_result = [list(loc_result[0])]
+    purchase_args_list = []
+    purchase_input_sql = "INSERT INTO purchase (purchase_id, total_price, payment_type, purchase_time, location_id) VALUES %s"
+    transaction_args_list = []
+    transaction_input_sql = "INSERT INTO transaction (transaction_id, product_id, purchase_id, transaction_price) VALUES %s"
     for idx in range(len(df)):
         total_price = df["price"][idx]
         payment_type = df["payment-type"][idx]
@@ -60,28 +64,10 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
 
         # we can now populate the purchase table
         purchase_id = str(uuid.uuid4())
-        sql = "INSERT INTO purchase (purchase_id, total_price, payment_type, purchase_time, location_id) VALUES (%(purchase_id)s,%(total_price)s,%(payment_type)s,%(purchase_time)s,%(location_id)s)"
-        values = {
-            "purchase_id": purchase_id,
-            "total_price": total_price,
-            "payment_type": payment_type,
-            "purchase_time": purchase_time,
-            "location_id": location_id,
-        }
-        db_update(conn, sql, values)
+        purchase_args_list.append((purchase_id, total_price, payment_type, purchase_time, location_id))
 
         # let's populate the transaction table
 
-        # first find the purchase id
-
-        search_purchase = "SELECT purchase_id FROM purchase WHERE total_price=%(total_price)s AND payment_type=%(payment_type)s AND purchase_time=%(purchase_time)s AND location_id=%(location_id)s"
-        values = {
-            "total_price": "%.2f" % total_price,
-            "payment_type": payment_type,
-            "purchase_time": purchase_time,
-            "location_id": location_id,
-        }
-        purchase_id = db_search(conn, search_purchase, values)[0][0]
 
         length = len(df["items"][idx])
         for position in range(2, length, 3):
@@ -97,11 +83,8 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
 
             product_id = product_variable[0][0]
             transaction_id = str(uuid.uuid4())
-            add_transaction = "INSERT INTO transaction (transaction_id, product_id, purchase_id, transaction_price) VALUES (%(transaction_id)s,%(product_id)s,%(purchase_id)s,%(transaction_price)s)"
-            values = {
-                "transaction_id": transaction_id,
-                "product_id": product_id,
-                "purchase_id": purchase_id,
-                "transaction_price": transaction_price,
-            }
-            db_update(conn, add_transaction, values)
+            transaction_args_list.append((transaction_id, product_id, purchase_id, transaction_price))
+            
+            
+    db_update_many(conn, purchase_input_sql, purchase_args_list)
+    db_update_many(conn, transaction_input_sql, transaction_args_list)
