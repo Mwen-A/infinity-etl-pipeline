@@ -22,14 +22,16 @@ def load_unique_locations(conn, db_update, db_search, df):
 
 def load_unique_products(conn, db_update, db_search, products_set):
     # load the unique products into the database
+    args_list = []
+    sql = "INSERT INTO product (product_id, product_name, product_size) VALUES %s"
     for prod_id, size, name in products_set:
         search_product = "SELECT * FROM product WHERE product_size=%(product_size)s AND product_name=%(product_name)s"
         values = {"product_id": prod_id, "product_name": name, "product_size": size}
         result = db_search(conn, search_product, values)
         if result == []:
-            sql = "INSERT INTO product (product_id, product_name, product_size) VALUES (%(product_id)s,%(product_name)s,%(product_size)s)"
-            values = {"product_id": prod_id, "product_name": name, "product_size": size}
-            db_update(conn, sql, values)
+            values = (prod_id, name, size)
+            args_list.append(values)
+    db_update_many(conn, sql, args_list)
 
 
 def load_purchase_transaction(conn, db_update, db_search, df, loc):
