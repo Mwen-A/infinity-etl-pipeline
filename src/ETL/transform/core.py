@@ -23,10 +23,12 @@ def get_unique_products(df):
         for position in range(0, len(row), 3):
             products_list.append((row[position].title(), row[position + 1].title()))
     products_set = set(products_list)
+    products_list_2 = []
     for item in products_set:
-        product_id = uuid.uuid4()
+        product_id = str(uuid.uuid4())
         item = (product_id, ) + item
-    return products_set
+        products_list_2.append(item)
+    return products_list_2
 
 
 # this may be used to speed up the loading process

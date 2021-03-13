@@ -21,6 +21,7 @@ from src.ETL.transform.core import (
     normalise_items,
     fill_null_values,
     grab_first_location,
+    get_unique_products,
 )
 from src.ETL.load.core import (
     load_unique_locations,
@@ -32,10 +33,10 @@ from src.ETL.load.core import (
 conn = connection()
 
 # creating the tables
-db_create(conn, create_product)
-db_create(conn, create_location)
-db_create(conn, create_purchase)
-db_create(conn, create_transaction)
+# db_create(conn, create_product)
+# db_create(conn, create_location)
+# db_create(conn, create_purchase)
+# db_create(conn, create_transaction)
 
 # EXTRACT
 # load data into the program
@@ -54,7 +55,8 @@ loc = grab_first_location(df)
 
 # # LOAD
 load_unique_locations(conn, db_update, db_search, df)
-load_unique_products(conn, db_update, db_search, df)
+products_set = get_unique_products(df)
+load_unique_products(conn, db_update, db_search, products_set)
 load_purchase_transaction(conn, db_update, db_search, df, loc)
 
 # on a clean creation:
