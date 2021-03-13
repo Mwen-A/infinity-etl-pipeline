@@ -12,8 +12,8 @@ def load_unique_locations(conn, db_update, db_search, df):
         values = {"location_name": location.title()}
         result = db_search(conn, search_location, values)
         if result == []:
-            location_id = uuid.uuid4()
-            sql = "INSERT INTO location (location_id, location_name) VALUES (%(location_name)s)"
+            location_id = str(uuid.uuid4())
+            sql = "INSERT INTO location (location_id, location_name) VALUES (%(location_id)s, %(location_name)s)"
             values = {"location_id":location_id, "location_name": location.title()}
             db_update(conn, sql, values)
 
@@ -57,7 +57,7 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
             location_id = loc_result[0][0]
 
         # we can now populate the purchase table
-        purchase_id = uuid.uuid4()
+        purchase_id = str(uuid.uuid4())
         sql = "INSERT INTO purchase (purchase_id, total_price, payment_type, purchase_time, location_id) VALUES (%(purchase_id)s,%(total_price)s,%(payment_type)s,%(purchase_time)s,%(location_id)s)"
         values = {
             "purchase_id": purchase_id,
@@ -94,7 +94,7 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
             product_variable = db_search(conn, search_for_product_id, values)
 
             product_id = product_variable[0][0]
-            transaction_id = uuid.uuid4()
+            transaction_id = str(uuid.uuid4())
             add_transaction = "INSERT INTO transaction (transaction_id, product_id, purchase_id, transaction_price) VALUES (%(transaction_id)s,%(product_id)s,%(purchase_id)s,%(transaction_price)s)"
             values = {
                 "transaction_id": transaction_id,
