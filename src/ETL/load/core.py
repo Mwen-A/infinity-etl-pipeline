@@ -1,5 +1,5 @@
 import pandas as pd
-from src.db.core import connection, db_update, db_search
+from src.db.core import connection, db_update, db_search, db_update_many
 import uuid
 
 def load_unique_locations(conn, db_update, db_search, df):
@@ -7,15 +7,17 @@ def load_unique_locations(conn, db_update, db_search, df):
     location_df = df["location"].unique()
 
     # # load the locations into the database
+    sql = "INSERT INTO location (location_id, location_name) VALUES %s"
+    args_list = []
     for location in location_df:
         search_location = "SELECT * FROM location WHERE location_name=%(location_name)s"
         values = {"location_name": location.title()}
         result = db_search(conn, search_location, values)
         if result == []:
             location_id = str(uuid.uuid4())
-            sql = "INSERT INTO location (location_id, location_name) VALUES (%(location_id)s, %(location_name)s)"
-            values = {"location_id":location_id, "location_name": location.title()}
-            db_update(conn, sql, values)
+            values = (location_id, location.title())
+            args_list.append(values)
+    db_update_many(conn, sql, args_list)
 
 
 def load_unique_products(conn, db_update, db_search, products_set):
