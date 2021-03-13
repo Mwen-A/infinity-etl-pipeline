@@ -1,5 +1,6 @@
 import os
 import psycopg2  # postgreSQL database adapter
+import psycopg2.extras
 from dotenv import load_dotenv  # for loading env variables from .env file
 
 load_dotenv()
@@ -56,6 +57,14 @@ def db_update(conn, sql, values):
     try:
         cur = conn.cursor()
         cur.execute(sql, values)
+        conn.commit()
+    finally:
+        pass
+
+def db_update_many(conn, sql, values_list):
+    try:
+        cur = conn.cursor()
+        psycopg2.extras.execute_values(cur,sql,values_list)
         conn.commit()
     finally:
         pass

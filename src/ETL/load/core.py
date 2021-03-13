@@ -17,17 +17,7 @@ def load_unique_locations(conn, db_update, db_search, df):
             db_update(conn, sql, values)
 
 
-def load_unique_products(conn, db_update, db_search, df):
-    # create another dataframe for the unique products
-    products_list = []
-    for row in df["items"]:
-        for position in range(0, len(row), 3):
-            products_list.append((row[position].title(), row[position + 1].title())
-    products_set = set(products_list)
-    for item in products_set:
-        product_id = uuid.uuid4()
-        products_set = (product_id, ) + item
-        
+def load_unique_products(conn, db_update, db_search, products_set):
     # load the unique products into the database
     for prod_id, size, name in products_set:
         search_product = "SELECT * FROM product WHERE product_size=%(product_size)s AND product_name=%(product_name)s"
@@ -108,11 +98,3 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
                 "transaction_price": transaction_price,
             }
             db_update(conn, add_transaction, values)
-            
-def func_test():
-    for row in df["items"]:
-        for position in range(0, len(row), 3):
-            products_list.append((row[position].title(), row[position + 1].title()))
-    products_set = set(products_list)
-    print(products_set)
-    
