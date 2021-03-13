@@ -33,10 +33,10 @@ from src.ETL.load.core import (
 conn = connection()
 
 # creating the tables
-# db_create(conn, create_product)
-# db_create(conn, create_location)
-# db_create(conn, create_purchase)
-# db_create(conn, create_transaction)
+db_create(conn, create_product)
+db_create(conn, create_location)
+db_create(conn, create_purchase)
+db_create(conn, create_transaction)
 
 # EXTRACT
 # load data into the program

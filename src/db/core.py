@@ -79,8 +79,8 @@ def db_delete(conn, sql, index):
         pass
 
 create_transaction = '''
-CREATE SEQUENCE transaction_transaction_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
-CREATE TABLE "public"."transaction" (
+CREATE SEQUENCE IF NOT EXISTS transaction_transaction_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+CREATE TABLE IF NOT EXISTS "public"."transaction" (
     "transaction_id" integer DEFAULT nextval('transaction_transaction_id_seq') NOT NULL,
     "product_id" integer NOT NULL,
     "purchase_id" integer NOT NULL,
@@ -92,8 +92,8 @@ CREATE TABLE "public"."transaction" (
 '''
 
 create_purchase = '''
-CREATE SEQUENCE purchase_purchase_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
-CREATE TABLE "public"."purchase" (
+CREATE SEQUENCE IF NOT EXISTS purchase_purchase_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+CREATE TABLE IF NOT EXISTS "public"."purchase" (
     "purchase_id" integer DEFAULT nextval('purchase_purchase_id_seq') NOT NULL,
     "total_price" money NOT NULL,
     "payment_type" character varying NOT NULL,
@@ -105,8 +105,8 @@ CREATE TABLE "public"."purchase" (
 '''
 
 create_product = '''
-CREATE SEQUENCE product_product_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
-CREATE TABLE "public"."product" (
+CREATE SEQUENCE IF NOT EXISTS product_product_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+CREATE TABLE IF NOT EXISTS "public"."product" (
     "product_id" integer DEFAULT nextval('product_product_id_seq') NOT NULL,
     "product_name" character varying NOT NULL,
     "product_size" character varying NOT NULL,
@@ -115,8 +115,8 @@ CREATE TABLE "public"."product" (
 '''
 
 create_location = '''
-CREATE SEQUENCE location_location_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
-CREATE TABLE "public"."location" (
+CREATE SEQUENCE IF NOT EXISTS location_location_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+CREATE TABLE IF NOT EXISTS "public"."location" (
     "location_id" integer DEFAULT nextval('location_location_id_seq') NOT NULL,
     "location_name" character varying NOT NULL,
     CONSTRAINT "location_location_id" PRIMARY KEY ("location_id")
