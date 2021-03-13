@@ -3,7 +3,7 @@ import uuid
 
 def normalise_items(df):
     for i in range(len(df["items"])):
-        df["items"][i].split(",")
+        df["items"][i] = df["items"][i].split(",")
     return df
 
 def fill_null_values(df):
