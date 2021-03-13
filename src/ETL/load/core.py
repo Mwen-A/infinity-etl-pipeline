@@ -12,8 +12,9 @@ def load_unique_locations(conn, db_update, db_search, df):
         values = {"location_name": location.title()}
         result = db_search(conn, search_location, values)
         if result == []:
-            sql = "INSERT INTO location (location_name) VALUES (%(location_name)s)"
-            values = {"location_name": location.title()}
+            location_id = uuid.uuid4()
+            sql = "INSERT INTO location (location_id, location_name) VALUES (%(location_name)s)"
+            values = {"location_id":location_id, "location_name": location.title()}
             db_update(conn, sql, values)
 
 
