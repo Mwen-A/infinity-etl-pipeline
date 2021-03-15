@@ -58,18 +58,17 @@ from src.ETL.load.core import load
 # did 4185 queries for the load_purchase_transaction
 # leading to a total of: 4295 queries
 
+
 def lambda_handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
     key = event["Records"][0]["s3"]["object"]["key"]
     s3_resource = boto3.resource("s3")
     s3_object = s3_resource.Object(bucket, key)
     raw = s3_object.get()["Body"].read().decode("utf-8").splitlines()
-    
+
     raw = extract(bucket)
     df, loc, uniques = transform(raw)
-    result = load(df, loc, uniques) # ---> send result to redshift?? 
-    
+    result = load(df, loc, uniques)  # ---> send result to redshift??
+
     # print out first row of df returned from transform
     print(df[0])
-
-    
