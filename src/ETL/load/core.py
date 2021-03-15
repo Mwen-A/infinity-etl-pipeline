@@ -2,6 +2,9 @@ import pandas as pd
 from src.db.core import connection, db_update, db_search, db_update_many
 import uuid
 
+
+conn = connection() 
+
 def load_unique_locations(conn, db_update, db_search, df):
     # create a dataframe for the unique locations
     location_df = df["location"].unique()
@@ -90,3 +93,8 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
             
     db_update_many(conn, purchase_input_sql, purchase_args_list)
     db_update_many(conn, transaction_input_sql, transaction_args_list)
+
+def load(df, loc, uniques):
+    load_unique_locations(conn, db_update, db_search, df)
+    load_unique_products(conn, db_update, db_search, uniques)
+    load_purchase_transaction(conn, db_update, db_search, df, loc)
