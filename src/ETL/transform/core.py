@@ -2,8 +2,7 @@ import pandas as pd
 import uuid
 
 def normalise_items(df):
-    for i in range(len(df["items"])):
-        df["items"][i] = df["items"][i].split(",")
+    df['items'] = [x.split(',') for x in df['items']]
     return df
 
 def fill_null_values(df):
@@ -36,3 +35,11 @@ def get_unique_products(df):
 # this initializes the function for filling the purchases and transactions
 def grab_first_location(df):
     return df["location"][0].title()
+
+def transform(df):
+    df = normalise_items(df)
+    df = fill_null_values(df)
+    loc = grab_first_location(df)
+    uniques = get_unique_products(df)
+    return df, loc, uniques
+
