@@ -1,0 +1,23 @@
+{
+  "name": "group-a-project",
+  "version": "1.0.0",
+  "description": "An ETL pipeline \"elevator pitch\"",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iw-de-man-2/group-a-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iw-de-man-2/group-a-project/issues"
+  },
+  "homepage": "https://github.com/iw-de-man-2/group-a-project#readme"
+}
