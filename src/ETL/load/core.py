@@ -1,11 +1,12 @@
 import pandas as pd
-from src.db.core import connection, db_update, db_search, db_update_many
+from src.db.core import connection, db_search, db_update_many
 import uuid
 
 
-conn = connection() 
+conn = connection()
 
-def load_unique_locations(conn, db_update, db_search, df):
+
+def load_unique_locations(conn, db_update_many, db_search, df):
     # create a dataframe for the unique locations
     location_df = df["location"].unique()
 
@@ -23,7 +24,7 @@ def load_unique_locations(conn, db_update, db_search, df):
     db_update_many(conn, sql, args_list)
 
 
-def load_unique_products(conn, db_update, db_search, products_set):
+def load_unique_products(conn, db_update_many, db_search, products_set):
     # load the unique products into the database
     args_list = []
     sql = "INSERT INTO product (product_id, product_name, product_size) VALUES %s"
@@ -37,7 +38,7 @@ def load_unique_products(conn, db_update, db_search, products_set):
     db_update_many(conn, sql, args_list)
 
 
-def load_purchase_transaction(conn, db_update, db_search, df, loc):
+def load_purchase_transaction(conn, db_update_many, db_search, df, loc):
     search_location = (
         "SELECT location_id FROM location WHERE location_name=%(location_name)s"
     )
@@ -69,10 +70,11 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
 
         # we can now populate the purchase table
         purchase_id = str(uuid.uuid4())
-        purchase_args_list.append((purchase_id, total_price, payment_type, purchase_time, location_id))
+        purchase_args_list.append(
+            (purchase_id, total_price, payment_type, purchase_time, location_id)
+        )
 
         # let's populate the transaction table
-
 
         length = len(df["items"][idx])
         for position in range(2, length, 3):
@@ -88,13 +90,15 @@ def load_purchase_transaction(conn, db_update, db_search, df, loc):
 
             product_id = product_variable[0][0]
             transaction_id = str(uuid.uuid4())
-            transaction_args_list.append((transaction_id, product_id, purchase_id, transaction_price))
-            
-            
+            transaction_args_list.append(
+                (transaction_id, product_id, purchase_id, transaction_price)
+            )
+
     db_update_many(conn, purchase_input_sql, purchase_args_list)
     db_update_many(conn, transaction_input_sql, transaction_args_list)
 
+
 def load(df, loc, uniques):
-    load_unique_locations(conn, db_update, db_search, df)
-    load_unique_products(conn, db_update, db_search, uniques)
-    load_purchase_transaction(conn, db_update, db_search, df, loc)
+    load_unique_locations(conn, db_update_many, db_search, df)
+    load_unique_products(conn, db_update_many, db_search, uniques)
+    load_purchase_transaction(conn, db_update_many, db_search, df, loc)

@@ -1,9 +1,11 @@
 import pandas as pd
 import uuid
 
+
 def normalise_items(df):
-    df['items'] = [x.split(',') for x in df['items']]
+    df["items"] = [x.split(",") for x in df["items"]]
     return df
+
 
 def fill_null_values(df):
     for basket in df["items"]:
@@ -15,6 +17,7 @@ def fill_null_values(df):
                     basket[position] = "Regular"
     return df
 
+
 def get_unique_products(df):
     # create another dataframe for the unique products
     products_list = []
@@ -25,7 +28,7 @@ def get_unique_products(df):
     products_list_2 = []
     for item in products_set:
         product_id = str(uuid.uuid4())
-        item = (product_id, ) + item
+        item = (product_id,) + item
         products_list_2.append(item)
     return products_list_2
 
@@ -36,10 +39,10 @@ def get_unique_products(df):
 def grab_first_location(df):
     return df["location"][0].title()
 
+
 def transform(df):
     df = normalise_items(df)
     df = fill_null_values(df)
     loc = grab_first_location(df)
     uniques = get_unique_products(df)
     return df, loc, uniques
-

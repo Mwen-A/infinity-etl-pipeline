@@ -1,5 +1,5 @@
 service: aaa-lambda
-plugins: 
+plugins:
     -  serverless-python-requirements
 
 frameworkVersion: '2'
@@ -8,21 +8,19 @@ provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: 20201221
-  region: eu-west-1 
+  region: eu-west-1
   role: arn:aws:iam::534900169478:role/infinity-cafe-role
 
 functions:
-  execute: 
-    handler: src/app.execute 
-    events: 
+  execute:
+    handler: src/app.execute
+    events:
       - s3:
           bucket:
           events: s3:ObjectCreated:*
           rules:
-            - prefix: incoming/ 
+            - prefix: incoming/
             - suffix: .csv
-    
-    
 
 package:
   exclude:
