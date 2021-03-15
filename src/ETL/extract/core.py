@@ -24,3 +24,8 @@ def drop_sensitive_info(df):
     df.drop_duplicates()
     df.dropna()
     return df
+
+def extract(filepath: str):
+    df = extract_csv(filepath)
+    df = drop_sensitive_info(df)
+    return df
