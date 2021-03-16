@@ -7,11 +7,11 @@ load_dotenv()
 
 # DATABASE CONNECTION SETUP
 
-PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-HOST = os.environ.get("POSTGRES_HOST")
-PORT = int(os.environ.get("POSTGRES_PORT"))
-DB = os.environ.get("POSTGRES_DB")
-USER = os.environ.get("POSTGRES_USER")
+PASSWORD = os.environ.get("DB_PASSWORD")
+HOST = os.environ.get("DB_HOST")
+PORT = int(os.environ.get("DB_PORT"))
+DB = os.environ.get("DB_DB")
+USER = os.environ.get("DB_USER")
 
 
 def connection():
