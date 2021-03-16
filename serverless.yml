@@ -1,4 +1,4 @@
-service: aaa-lambda
+service: aaa-lambda-etl
 plugins:
   - serverless-python-requirements
   - serverless-dotenv-plugin
@@ -19,10 +19,10 @@ provider:
 
 functions:
   execute:
-    handler: src/app.execute
+    handler: src/app.lambda_handler
     events:
       - s3:
-          bucket: infinity-cafe-bucket
+          bucket: aaa-lambda-bucket
           event: s3:ObjectCreated:*
           rules:
             - prefix: incoming/
