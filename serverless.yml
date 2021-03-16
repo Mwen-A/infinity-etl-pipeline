@@ -11,6 +11,12 @@ provider:
   lambdaHashingVersion: 20201221
   region: eu-west-1
   role: arn:aws:iam::534900169478:role/infinity-cafe-role
+  vpc:
+    securityGroupIds:
+      - sg-00d713bdedcadb4bc
+    subnetIds:
+      - subnet-0289d4772717bc9cc
+      - subnet-0d517b54b1a9e8898
 
 functions:
   execute:
