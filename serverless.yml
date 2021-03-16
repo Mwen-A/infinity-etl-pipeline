@@ -18,7 +18,7 @@ functions:
     events:
       - s3:
           bucket: infinity-cafe-bucket
-          events: s3:ObjectCreated:*
+          event: s3:ObjectCreated:*
           rules:
             - prefix: incoming/
             - suffix: .csv
