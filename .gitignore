@@ -23,3 +23,4 @@ data
 # Serverless directories
 .serverless
 node_modules
+devcontainer.json
