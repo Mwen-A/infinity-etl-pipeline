@@ -1,9 +1,7 @@
 # importing the relevant packages
 import pandas as pd
-from io import BytesIO
 import json
 import boto3
-import csv
 
 
 # importing the relevant modulels
@@ -68,8 +66,8 @@ def lambda_handler(event, context):
     
     raw = extract(raw2)
     print(raw.head())
-    # df, loc, uniques = transform(raw)
+    df, loc, uniques = transform(raw)
     # result = load(df, loc, uniques)  # ---> send result to redshift??
 
     # print out first row of df returned from transform
-    # print(df[0])
+    print(df[0])
