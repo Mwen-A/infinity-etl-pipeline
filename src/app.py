@@ -65,10 +65,12 @@ def lambda_handler(event, context):
     s3_resource = boto3.resource("s3")
     s3_object = s3_resource.Object(bucket, key)
     raw = s3_object.get()["Body"].read().decode("utf-8").splitlines()
-
-    raw = extract(bucket)
-    df, loc, uniques = transform(raw)
-    result = load(df, loc, uniques)  # ---> send result to redshift??
+    
+    filepath = f"s3://{bucket}/{key}"
+    raw = extract(filepath)
+    print(raw.head())
+    # df, loc, uniques = transform(raw)
+    # result = load(df, loc, uniques)  # ---> send result to redshift??
 
     # print out first row of df returned from transform
-    print(df[0])
+    # print(df[0])
