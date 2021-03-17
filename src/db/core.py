@@ -7,11 +7,11 @@ load_dotenv()
 
 # DATABASE CONNECTION SETUP
 
-PASSWORD = os.environ.get("DB_PASSWORD")
-HOST = os.environ.get("DB_HOST")
-PORT = int(os.environ.get("DB_PORT"))
-DB = os.environ.get("DB")
-USER = os.environ.get("DB_USER")
+PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+HOST = os.environ.get("POSTGRES_HOST")
+PORT = int(os.environ.get("POSTGRES_PORT"))
+DB = os.environ.get("POSTGRES_DB")
+USER = os.environ.get("POSTGRES_USER")
 
 
 def connection():
@@ -80,10 +80,10 @@ def db_delete(conn, sql, index):
 
 create_transaction = '''
 CREATE TABLE IF NOT EXISTS "public"."transaction" (
-    "transaction_id" uuid NOT NULL,
-    "product_id" uuid NOT NULL,
-    "purchase_id" uuid NOT NULL,
-    "transaction_price" money NOT NULL,
+    "transaction_id" character varying NOT NULL,
+    "product_id" character varying NOT NULL,
+    "purchase_id" character varying NOT NULL,
+    "transaction_price" NUMERIC(4,2) NOT NULL,
     CONSTRAINT "transaction_transaction_id" PRIMARY KEY ("transaction_id"),
     CONSTRAINT "transaction_product_id_fkey" FOREIGN KEY (product_id) REFERENCES product(product_id) NOT DEFERRABLE,
     CONSTRAINT "transaction_purchase_id_fkey" FOREIGN KEY (purchase_id) REFERENCES purchase(purchase_id) NOT DEFERRABLE
@@ -92,11 +92,11 @@ CREATE TABLE IF NOT EXISTS "public"."transaction" (
 
 create_purchase = '''
 CREATE TABLE IF NOT EXISTS "public"."purchase" (
-    "purchase_id" uuid NOT NULL,
-    "total_price" money NOT NULL,
+    "purchase_id" character varying NOT NULL,
+    "total_price" NUMERIC(4,2) NOT NULL,
     "payment_type" character varying NOT NULL,
     "purchase_time" timestamp NOT NULL,
-    "location_id" uuid NOT NULL,
+    "location_id" character varying NOT NULL,
     CONSTRAINT "purchase_purchase_id" PRIMARY KEY ("purchase_id"),
     CONSTRAINT "purchase_location_id_fkey" FOREIGN KEY (location_id) REFERENCES location(location_id) NOT DEFERRABLE
 ) WITH (oids = false);
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS "public"."purchase" (
 
 create_product = '''
 CREATE TABLE IF NOT EXISTS "public"."product" (
-    "product_id" uuid NOT NULL,
+    "product_id" character varying NOT NULL,
     "product_name" character varying NOT NULL,
     "product_size" character varying NOT NULL,
     CONSTRAINT "product_product_id" PRIMARY KEY ("product_id")
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS "public"."product" (
 
 create_location = '''
 CREATE TABLE IF NOT EXISTS "public"."location" (
-    "location_id" uuid NOT NULL,
+    "location_id" character varying NOT NULL,
     "location_name" character varying NOT NULL,
     CONSTRAINT "location_location_id" PRIMARY KEY ("location_id")
 ) WITH (oids = false);
