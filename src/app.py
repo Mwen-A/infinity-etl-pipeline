@@ -1,5 +1,6 @@
 # importing the relevant packages
 import pandas as pd
+from io import BytesIO
 import json
 import boto3
 import csv
@@ -58,16 +59,14 @@ from src.ETL.load.core import load
 # did 4185 queries for the load_purchase_transaction
 # leading to a total of: 4295 queries
 
-
+s3_client = boto3.client('s3')
 def lambda_handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
     key = event["Records"][0]["s3"]["object"]["key"]
-    s3_resource = boto3.resource("s3")
-    s3_object = s3_resource.Object(bucket, key)
-    raw = s3_object.get()["Body"].read().decode("utf-8").splitlines()
+    resource = s3_client.get_object(Bucket=bucket, Key=key)
+    raw2 = resource['Body']
     
-    filepath = f"s3://{bucket}/{key}"
-    raw = extract(filepath)
+    raw = extract(raw2)
     print(raw.head())
     # df, loc, uniques = transform(raw)
     # result = load(df, loc, uniques)  # ---> send result to redshift??
