@@ -24,3 +24,4 @@ data
 .serverless
 node_modules
 .devcontainer/devcontainer.json
+.devcontainer/Dockerfile
