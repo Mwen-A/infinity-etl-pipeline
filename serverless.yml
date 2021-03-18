@@ -1,9 +1,6 @@
 service: aaa-lambda-etl
 plugins:
   - serverless-python-requirements
-  - serverless-dotenv-plugin
-
-frameworkVersion: '2'
 
 provider:
   name: aws
@@ -27,7 +24,12 @@ functions:
           rules:
             - prefix: incoming/
             - suffix: .csv
-
+    environment:
+      DB_HOST: ${ env:DB_HOST }
+      DB_PORT: ${ env:DB_PORT }
+      DB_USER: ${ env:DB_USER }
+      DB_PASS: ${ env:DB_PASS }
+      DB: ${ env:DB }
 package:
   exclude:
     - .venv/**
