@@ -20,7 +20,7 @@ from src.db.core import (
 from src.ETL.extract.core import extract
 from src.ETL.transform.core import transform
 from src.ETL.load.core import load
-
+print("hello")
 # setting up the connection
 # conn = connection()
 
