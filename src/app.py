@@ -69,4 +69,4 @@ def lambda_handler(event, context):
     raw = extract(raw2)
     df, loc, uniques = transform(raw)
     load(df, loc, uniques)  # ---> send result to redshift??
-    #meowmeowmeow
+    #meowmeowmeowgfdhdfghdfghdfhfdeghdfghdfghdfghdfgdhfghdfghdfdfghdfgh
