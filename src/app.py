@@ -65,9 +65,5 @@ def lambda_handler(event, context):
     raw2 = resource['Body']
     
     raw = extract(raw2)
-    print(raw.head())
     df, loc, uniques = transform(raw)
-    # result = load(df, loc, uniques)  # ---> send result to redshift??
-
-    # print out first row of df returned from transform
-    print(df[0])
+    load(df, loc, uniques)  # ---> send result to redshift??
