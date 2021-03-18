@@ -51,12 +51,6 @@ from src.ETL.load.core import load
 # load_unique_products(conn, db_update, db_search, products_set)
 # load_purchase_transaction(conn, db_update, db_search, df, loc)
 
-# on a clean creation:
-# did 2 queries for the load_unique_locations
-# did 108 queries for the load_unique_products
-# did 4185 queries for the load_purchase_transaction
-# leading to a total of: 4295 queries
-
 s3_client = boto3.client('s3')
 def lambda_handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
