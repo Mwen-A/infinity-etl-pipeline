@@ -57,6 +57,7 @@ print("hello")
 # did 4185 queries for the load_purchase_transaction
 # leading to a total of: 4295 queries
 # test1
+# test2
 
 s3_client = boto3.client('s3')
 def lambda_handler(event, context):
