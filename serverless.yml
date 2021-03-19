@@ -17,6 +17,7 @@ provider:
 functions:
   execute:
     handler: src/app.lambda_handler
+    timeout: 100
     events:
       - s3:
           bucket: aaa-lambda-bucket

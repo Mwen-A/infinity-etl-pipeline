@@ -20,7 +20,7 @@ from src.db.core import (
 from src.ETL.extract.core import extract
 from src.ETL.transform.core import transform
 from src.ETL.load.core import load
-print("hello")
+
 # setting up the connection
 # conn = connection()
 
@@ -69,4 +69,4 @@ def lambda_handler(event, context):
     raw = extract(raw2)
     df, loc, uniques = transform(raw)
     load(df, loc, uniques)  # ---> send result to redshift??
-    #meowmeowmeowgfdhdfghdfghdfhfdeghdfghdfghdfghdfgdhfghdfghdfdfghdfgh
+    
