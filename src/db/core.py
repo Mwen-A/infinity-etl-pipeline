@@ -7,7 +7,7 @@ load_dotenv()
 
 # DATABASE CONNECTION SETUP
 
-PASSWORD = os.environ.get("DB_PASSWORD")
+PASSWORD = os.environ.get("DB_PASS")
 HOST = os.environ.get("DB_HOST")
 PORT = os.environ.get("DB_PORT")
 DB = os.environ.get("DB")
