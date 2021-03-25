@@ -1,5 +1,5 @@
 import pandas as pd
-from src.db.core import connection, db_search, db_update_many, conn
+from src.db.core import connection, db_search, db_update_many
 import uuid
 
 
