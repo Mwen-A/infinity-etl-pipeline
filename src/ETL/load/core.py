@@ -2,11 +2,12 @@ import pandas as pd
 from src.db.core import connection, db_search, db_update_many
 import uuid
 
-
+conn = False
 
 
 def load_unique_locations(conn, db_update_many, db_search, df):
     # create a dataframe for the unique locations
+    conn = connection()
     location_df = df["location"].unique()
 
     # # load the locations into the database
@@ -21,10 +22,12 @@ def load_unique_locations(conn, db_update_many, db_search, df):
             values = (location_id, location.title())
             args_list.append(values)
     db_update_many(conn, sql, args_list)
+    conn.close()
 
 
 def load_unique_products(conn, db_update_many, db_search, products_set):
     # load the unique products into the database
+    conn = connection()
     args_list = []
     sql = "INSERT INTO product (product_id, product_name, product_size) VALUES %s"
     for prod_id, size, name in products_set:
@@ -35,9 +38,11 @@ def load_unique_products(conn, db_update_many, db_search, products_set):
             values = (prod_id, name, size)
             args_list.append(values)
     db_update_many(conn, sql, args_list)
+    conn.close()
 
 
 def load_purchase_transaction(conn, db_update_many, db_search, df, loc):
+    conn = connection()
     search_location = (
         "SELECT location_id FROM location WHERE location_name=%(location_name)s"
     )
@@ -95,6 +100,7 @@ def load_purchase_transaction(conn, db_update_many, db_search, df, loc):
 
     db_update_many(conn, purchase_input_sql, purchase_args_list)
     db_update_many(conn, transaction_input_sql, transaction_args_list)
+    conn.close()
 
 
 def load(df, loc, uniques):
