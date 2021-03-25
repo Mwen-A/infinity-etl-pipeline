@@ -1,9 +1,8 @@
 import pandas as pd
-from src.db.core import connection, db_search, db_update_many
+from src.db.core import connection, db_search, db_update_many, conn
 import uuid
 
 
-conn = connection()
 
 
 def load_unique_locations(conn, db_update_many, db_search, df):
