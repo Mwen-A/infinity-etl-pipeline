@@ -6,7 +6,7 @@ import boto3
 
 # importing the relevant modulels
 from src.db.core import (
-    conn,
+    connection,
     db_update,
     db_query,
     db_search,
@@ -22,7 +22,7 @@ from src.ETL.transform.core import transform
 from src.ETL.load.core import load
 
 # setting up the connection
-# conn = connection()
+conn = connection()
 
 # creating the tables
 # db_create(conn, create_product)

@@ -20,7 +20,7 @@ def connection():
     )
 
 
-conn = connection()
+# conn = connection()
 
 # DATABASE CONN FUNCTIONS
 
