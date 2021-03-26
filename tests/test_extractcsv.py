@@ -18,6 +18,7 @@ def extract_csv(file_path: str):
     df = pd.read_csv(file_path, names=headers)
     return df
 
+
 mock_df_raw = {
     "datetime": ["2020-12-20"],
     "location": ["ldn"],
