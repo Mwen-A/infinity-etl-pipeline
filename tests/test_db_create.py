@@ -16,3 +16,5 @@ def test_db_create():
     
     assert conn.cursor.call_count == 1
     assert conn.commit.call_count == 1
+    assert conn.cursor().execute.call_count == 1
+    conn.cursor().execute.assert_called_with(sql)
