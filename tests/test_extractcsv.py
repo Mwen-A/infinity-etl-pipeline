@@ -2,7 +2,7 @@ import pytest
 import pandas as pd
 from io import StringIO
 
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, patch
 from pandas.testing import assert_frame_equal, assert_series_equal
 
 def extract_csv(file_path: str):
@@ -42,7 +42,7 @@ mock_headers = pd.DataFrame(
     ],
 )
 
-def test_addheaders_ecsv():
+def test_addheaders():
     
     mock_data = StringIO("""2020-12-20,ldn,Momo,Car,CASH,50,None""")
     actual = extract_csv(mock_data)
@@ -52,9 +52,18 @@ def test_addheaders_ecsv():
     assert_frame_equal(actual, expected)
     assert (actual.shape == expected.shape)
 
-def test_filepatherror_ecsv():
+
+def test_filepatherror():
     with pytest.raises(IOError):
         extract_csv("notavalidpath")
 
-test_addheaders_ecsv()
-test_filepatherror_ecsv()
+
+def test_readcsv_count():
+    
+    pd.read_csv = Mock()
+    pd.read_csv.return_value=True
+    mock_data = StringIO("""2020-12-20,ldn,Momo,Car,CASH,50,None""")
+
+    extract_csv(mock_data)
+    assert pd.read_csv.call_count == 1
+
