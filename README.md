@@ -47,9 +47,8 @@ Serverless framework
 ### Setting up the ETL pipeline
 
 1. Download and extract the .zip folder
-2. `pip install -r requirements.txt` This will automatically download and install all the dependencies required
-3. 
-4. 
+2. Open up a new bash terminal in a selected IDE
+3. Install all the dependencies `pip install -r requirements.txt`  
 
 ### Git source control
 
