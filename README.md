@@ -8,12 +8,40 @@ For the franchise owners who need to understand their customers and be consisten
 
 ### Table of contents
 
+- [A Dilemma](#a-dilemma)
 - [Setting up the ETL pipeline](#setting-up-the-etl-pipeline)
 - [Git source control](#git-source-control)
 - [Team setup](#team-setup)
     - [Definitions of Done](#definitions-of-done)
     - [Ways of Working](#ways-of-working)
 
+### A Dilemma 
+### The Problem
+- Franchises have different menus at different times
+- No understanding of customer preferences 
+- Data silos between franchises 
+- No live data
+- No consistent menus across franchises
+### The Current Solution
+- Infrequent data analytics
+- Data back up in csv files
+- Monthly downloads of sales figures sent to the data team
+### The Ask
+
+- How to better understand sales trends?
+- How to apply insights to all locations?
+- How can we share data across franchises?
+- Who are our customers?
+- What are our customer preferences?
+- How can we make suggested menu changes and times?
+- What else can we do?
+
+### Our Solution 
+- Takes live data to output real-time business insights
+- Robust system 
+- Centralises data
+#### Technologies
+Serverless framework
 
 
 ### Setting up the ETL pipeline
